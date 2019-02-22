@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "hashids": "^1.2.2",
+    "shorthash": "0.0.2"
+  }
+}
