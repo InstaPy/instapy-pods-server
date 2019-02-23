@@ -5,7 +5,7 @@ var settings = require('./settings.js')//This file has not been checkedin as it 
 const functions = require('firebase-functions');
 const moment = require('moment');
 const sh = require("shorthash");
-
+var topicsArray = ["general", "beauty", "food", "travel", "sports", "entertainment"];
 const cors = require('cors')({
   origin: true,
 });
@@ -17,6 +17,8 @@ db.settings({ timestampsInSnapshots: true });
 
 exports.getRecentPosts = functions.https.onRequest(async (req, res) => {
   return cors(req, res, () => {
+    if (topicsArray.indexOf(req.query.topic) == -1)
+        res.status(403).send("invalid topic");
     var collRef = db.collection(req.query.topic);
     collRef.get()
       .then((snapshot) => {
@@ -37,6 +39,8 @@ exports.getRecentPosts = functions.https.onRequest(async (req, res) => {
 
 exports.publishMyLatestPost = functions.https.onRequest(async (req, res) => {
   return cors(req, res, () => {
+    if (topicsArray.indexOf(req.query.topic) == -1)
+        res.status(403).send("invalid topic");
     var hashedpostid = sh.unique(req.query.postid);
     console.log('hashedpostid:', hashedpostid);
     const doctRef = db.collection(req.query.topic).doc(hashedpostid);
@@ -55,6 +59,8 @@ exports.publishMyLatestPost = functions.https.onRequest(async (req, res) => {
 
 exports.deleteOlderPosts = functions.https.onRequest(async (req, res) => {
   return cors(req, res, () => {
+    if (topicsArray.indexOf(req.query.topic) == -1)
+        res.status(403).send("invalid topic");
     const hourDeltainSec = 60*60*12
     const nowinSec = (+ new Date())/1000
     var collRef = db.collection(req.query.topic)
@@ -81,6 +87,8 @@ exports.deleteOlderPosts = functions.https.onRequest(async (req, res) => {
 
 exports.instapost = functions.https.onRequest(async (req, res) => {
   return cors(req, res, () => {
+    if (topicsArray.indexOf(req.query.topic) == -1)
+        res.status(403).send("invalid topic");
     const doctRef = db.collection(req.query.topic).doc(req.query.hashedpostid);
     var postid = doctRef.get().then(doc => {
       if (!doc.exists) {
