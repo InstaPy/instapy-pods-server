@@ -17,7 +17,7 @@ db.settings({ timestampsInSnapshots: true });
 
 exports.getRecentPosts = functions.https.onRequest(async (req, res) => {
   return cors(req, res, () => {
-    var collRef = db.collection(req.query.catagory);
+    var collRef = db.collection(req.query.category);
     collRef.get()
       .then((snapshot) => {
         var array = [];
@@ -39,7 +39,7 @@ exports.publishMyLatestPost = functions.https.onRequest(async (req, res) => {
   return cors(req, res, () => {
     var hashedpostid = sh.unique(req.query.postid);
     console.log('hashedpostid:', hashedpostid);
-    const doctRef = db.collection(req.query.catagory).doc(hashedpostid);
+    const doctRef = db.collection(req.query.category).doc(hashedpostid);
     doctRef.set({
       'postid': req.query.postid
     })
@@ -57,7 +57,7 @@ exports.deleteOlderPosts = functions.https.onRequest(async (req, res) => {
   return cors(req, res, () => {
     const hourDeltainSec = 60*60*12
     const nowinSec = (+ new Date())/1000
-    var collRef = db.collection(req.query.catagory)
+    var collRef = db.collection(req.query.category)
     collRef.get().then((snapshot) => {
       var arr = [];
       snapshot.forEach((doc) => {
@@ -81,7 +81,7 @@ exports.deleteOlderPosts = functions.https.onRequest(async (req, res) => {
 
 exports.instapost = functions.https.onRequest(async (req, res) => {
   return cors(req, res, () => {
-    const doctRef = db.collection(req.query.catagory).doc(req.query.hashedpostid);
+    const doctRef = db.collection(req.query.category).doc(req.query.hashedpostid);
     var postid = doctRef.get().then(doc => {
       if (!doc.exists) {
         console.log('No such document!');
