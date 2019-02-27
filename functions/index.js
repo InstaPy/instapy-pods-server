@@ -1,9 +1,6 @@
 'use strict';
 
-var settings = require('./settings.js')//This file has not been checkedin as it contains auth data
-
 const functions = require('firebase-functions');
-const moment = require('moment');
 const sh = require("shorthash");
 var topicsArray = ["general", "beauty", "food", "travel", "sports", "entertainment"];
 const cors = require('cors')({
