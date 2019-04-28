@@ -24,7 +24,7 @@ exports.getRecentPosts = functions.https.onRequest(async (req, res) => {
         snapshot.forEach((doc) => {
           console.log(doc.id, '=>', doc.data());
           console.log('_updateTime:', doc._updateTime._seconds);
-          array.push(doc.data());
+          array.push(doc.data().postid);
         });
         res.status(200).send(array);
       })
