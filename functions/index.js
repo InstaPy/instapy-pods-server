@@ -3,6 +3,7 @@
 const functions = require('firebase-functions');
 const sh = require("shorthash");
 var topicsArray = ["general", "beauty", "food", "travel", "sports", "entertainment"];
+var modesArray = ["light", "normal", "heavy"];
 const cors = require('cors')({
   origin: true,
 });
@@ -34,6 +35,28 @@ exports.getRecentPosts = functions.https.onRequest(async (req, res) => {
   });
 });
 
+exports.getRecentPostsV1 = functions.https.onRequest(async (req, res) => {
+  return cors(req, res, () => {
+    if (topicsArray.indexOf(req.query.topic) == -1)
+        res.status(403).send("Invalid topic. Allowed topics on this server are : " + topicsArray.join(','));
+    var collRef = db.collection(req.query.topic);
+    collRef.get()
+      .then((snapshot) => {
+        var array = [];
+        snapshot.forEach((doc) => {
+          console.log(doc.id, '=>', doc.data());
+          console.log('_updateTime:', doc._updateTime._seconds);
+          array.push(doc.data());
+        });
+        res.status(200).send(array);
+      })
+      .catch((err) => {
+        console.log('Error getRecentPosts', err);
+        res.status(403).send(err);
+      });
+  });
+});
+
 exports.publishMyLatestPost = functions.https.onRequest(async (req, res) => {
   return cors(req, res, () => {
     if (topicsArray.indexOf(req.query.topic) == -1)
@@ -41,7 +64,13 @@ exports.publishMyLatestPost = functions.https.onRequest(async (req, res) => {
     var hashedpostid = sh.unique(req.query.postid);
     console.log('hashedpostid:', hashedpostid);
     const doctRef = db.collection(req.query.topic).doc(hashedpostid);
+
+    var mode = "normal";
+    if (req.query.mode && modesArray.indexOf(req.query.mode) >= 0) {
+      mode = req.query.mode;
+    }
     doctRef.set({
+      'mode': mode,
       'postid': req.query.postid
     })
     .then((snapshot) => {
