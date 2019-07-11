@@ -3,13 +3,9 @@
   "description": "Request handlers for the InstaPy pods feature",
   "dependencies": {
     "cors": "^2.8.1",
-    "firebase-admin": "~7.0.0",
-    "firebase-functions": "^2.2.0",
+    "firebase-admin": "^8.2.0",
+    "firebase-functions": "^3.0.2",
     "shorthash": "^0.0.2"
-  },
-  "devDependencies": {
-    "eslint": "^4.13.1",
-    "eslint-plugin-promise": "^3.6.0"
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint --max-warnings=0 .",
@@ -20,7 +16,7 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "8"
+    "node": "10"
   },
   "private": true
 }
