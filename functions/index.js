@@ -10,7 +10,7 @@ const cors = require('cors')({
 // set available topics
 const topics = [
   'general',
-  'beauty',
+  'fashion',
   'food',
   'travel',
   'sports',
