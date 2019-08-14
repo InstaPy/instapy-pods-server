@@ -17,7 +17,7 @@ const topics = [
   'entertainment',
 ];
 // set modes
-const modes = ['light', 'normal', 'heavy'];
+const modes = ['no_comments', 'light', 'normal', 'heavy'];
 // instantiate FireStore
 admin.initializeApp();
 const db = admin.firestore();
