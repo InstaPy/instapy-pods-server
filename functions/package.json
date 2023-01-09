@@ -3,8 +3,8 @@
   "description": "Request handlers for the InstaPy pods feature",
   "dependencies": {
     "cors": "^2.8.1",
-    "firebase-admin": "^8.2.0",
-    "firebase-functions": "^3.0.2",
+    "firebase-admin": "^11.4.1",
+    "firebase-functions": "^3.24.1",
     "shorthash": "^0.0.2"
   },
   "scripts": {
